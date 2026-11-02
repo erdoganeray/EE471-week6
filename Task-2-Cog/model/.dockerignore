@@ -7,5 +7,6 @@ __pycache__/
 *.jpeg
 *.png
 
-# hub/ (the downloaded ResNet-50 weights) is NOT listed here on purpose:
-# it is baked into the image so the container doesn't download 100 MB on every start.
+# Weights downloaded locally by `cog run`. The image gets its own copy from the
+# build.run step in cog.yaml, so every computer builds the same image.
+hub/

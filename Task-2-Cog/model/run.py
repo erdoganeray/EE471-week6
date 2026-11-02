@@ -4,7 +4,7 @@ import logging
 import os
 import sys
 
-# torchvision downloads the weights to ./hub, which `cog build` then copies into the image
+# torchvision looks for the weights in ./hub (/src/hub in the image, filled by build.run in cog.yaml)
 os.environ["TORCH_HOME"] = "."
 
 import torch

@@ -1,4 +1,9 @@
 build:
   python_version: "3.13"
   python_requirements: requirements.txt
+  # Runs during `cog build`, after the Python packages are installed (like RUN in a Dockerfile).
+  # Downloads the ResNet-50 weights into the image (/src/hub, where run.py's TORCH_HOME="." looks),
+  # so the container starts without internet and doesn't download 100 MB on every start.
+  run:
+    - 'TORCH_HOME=/src python -c "from torchvision import models; models.ResNet50_Weights.IMAGENET1K_V1.get_state_dict(progress=False)"'
 run: "run.py:Runner"

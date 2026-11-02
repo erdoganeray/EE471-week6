@@ -97,8 +97,8 @@ and reaches the model by its Compose service name (`http://model:5000`).
 
 ### Run
 
-1. Build the model image with Cog (in WSL on Windows). The first build downloads PyTorch; the first `cog run`
-   or build also downloads the ResNet-50 weights to `model/hub/`, which are then copied into the image:
+1. Build the model image with Cog (in WSL on Windows). The first build downloads PyTorch and the ResNet-50 weights
+   (about 100 MB, baked into the image so the container starts without downloading anything):
    ```bash
    cd Task-2-Cog/model
    cog build -t cat-classifier-model
@@ -119,9 +119,9 @@ cog run -i image=@cat.jpg
 
 | File | Purpose |
 |---|---|
-| `model/cog.yaml` | Cog's build recipe: Python version, `requirements.txt`, and the class that runs predictions (`run.py:Runner`). Cog turns it into a Docker image with an HTTP API |
+| `model/cog.yaml` | Cog's build recipe: Python version, `requirements.txt`, a `build.run` step that downloads the weights into the image, and the class that runs predictions (`run.py:Runner`). Cog turns it into a Docker image with an HTTP API |
 | `model/run.py` | `setup()` loads ResNet-50 once when the container starts; `run()` classifies one image and logs it |
-| `model/.dockerignore` | Keeps test images and caches out of the image (the `hub/` weights are kept on purpose) |
+| `model/.dockerignore` | Keeps test images, caches and locally downloaded weights out of the build context |
 | `web/app.py` | Flask website: `POST /api/classify` (form field `image`) forwards the photo to Cog, `GET /api/health` reports the model status |
 | `web/Dockerfile` | Small Python image for the website (no PyTorch), served by Gunicorn |
 | `compose.yaml` | Runs both containers, waits for the model's health check, and tells the website where the model is (`COG_URL`) |

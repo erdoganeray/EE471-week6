@@ -1,0 +1,46 @@
+{
+  "info": {
+    "name": "Cat Kind Classifier (Cog)",
+    "description": "Requests for the Cog model container published on http://localhost:5002.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health check",
+      "request": {
+        "method": "GET",
+        "url": "http://localhost:5002/health-check"
+      }
+    },
+    {
+      "name": "Classify a cat (JSON body file)",
+      "request": {
+        "method": "POST",
+        "description": "Create the body with: python make_request.py cat.jpg, then choose cat.json under Body -> binary.",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "file",
+          "file": {}
+        },
+        "url": "http://localhost:5002/predictions"
+      }
+    },
+    {
+      "name": "Classify a cat (image URL)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"input\": {\n    \"image\": \"https://gist.githubusercontent.com/bfirsh/3c2115692682ae260932a67d93fd94a8/raw/56b19f53f7643bb6c0b822c410c366c3a6244de2/mystery.jpg\"\n  }\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "http://localhost:5002/predictions"
+      }
+    }
+  ]
+}

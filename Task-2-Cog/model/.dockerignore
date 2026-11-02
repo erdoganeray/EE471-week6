@@ -1,0 +1,11 @@
+# Local Python environments and caches
+.venv/
+__pycache__/
+
+# Test images are not needed inside the model image
+*.jpg
+*.jpeg
+*.png
+
+# hub/ (the downloaded ResNet-50 weights) is NOT listed here on purpose:
+# it is baked into the image so the container doesn't download 100 MB on every start.

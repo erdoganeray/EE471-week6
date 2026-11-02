@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat Kind Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <main class="card">
+        <header>
+            <h1>🐱 Cat Kind Classifier</h1>
+            <p class="subtitle">Upload a photo of a cat and find out its kind. ResNet-50 running in a Cog container.</p>
+            <p class="status" id="model-status"><span class="dot"></span><span id="model-status-text">Checking model…</span></p>
+        </header>
+
+        <label class="dropzone" id="dropzone">
+            <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp,image/gif,image/bmp" hidden>
+            <img id="preview" alt="Selected photo" hidden>
+            <span id="dropzone-text">Drop a cat photo here or <u>choose a file</u><br><small>JPEG, PNG, WebP, GIF or BMP · max 10 MB</small></span>
+        </label>
+
+        <button id="classify-button" disabled>Classify</button>
+
+        <p class="error" id="error" hidden></p>
+
+        <section class="result" id="result" hidden>
+            <h2 id="result-title"></h2>
+            <p class="result-detail" id="result-detail"></p>
+            <h3 id="bars-title"></h3>
+            <ul class="bars" id="bars"></ul>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

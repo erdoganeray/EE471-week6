@@ -1,0 +1,30 @@
+# Cat-kind classifier: Cog model container + website container.
+# 1) Build the model image with Cog (in WSL / Linux / macOS):  cd Task-2-Cog/model && cog build -t cat-classifier-model
+# 2) Start both:                                                docker compose -f Task-2-Cog/compose.yaml up --build
+
+services:
+  model:
+    image: cat-classifier-model        # built by `cog build`, Compose cannot build Cog images itself
+    pull_policy: never                 # don't look for it on Docker Hub, it only exists locally
+    ports:
+      - "5002:5000"                    # published so Postman can call http://localhost:5002/predictions
+    healthcheck:
+      # Cog answers {"status": "READY"} once setup() has loaded the model
+      test: ["CMD-SHELL", "curl -fs http://localhost:5000/health-check | grep -q READY"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    restart: unless-stopped
+
+  web:
+    build: ./web
+    image: cat-classifier-web
+    ports:
+      - "8000:5000"                    # http://localhost:8000
+    environment:
+      # Containers in the same Compose project reach each other by service name
+      COG_URL: http://model:5000
+    depends_on:
+      model:
+        condition: service_healthy     # start the website only after the model is READY
+    restart: unless-stopped

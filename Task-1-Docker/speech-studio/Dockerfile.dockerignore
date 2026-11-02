@@ -1,0 +1,14 @@
+# Files Docker leaves out of the build context for this Dockerfile.
+# (A .dockerignore next to the Dockerfile is used because the context, EE471-week5, is a submodule we don't edit.)
+
+# Never send secrets into an image
+.env
+**/.env
+
+.git
+**/.git
+**/__pycache__
+**/*.pyc
+**/.venv
+**/venv
+**/*.md

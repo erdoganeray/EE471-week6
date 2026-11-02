@@ -1,0 +1,23 @@
+# Runs both Week 5 apps:  docker compose -f Task-1-Docker/compose.yaml up --build
+# Paths below are relative to this file.
+
+services:
+  speech-studio:
+    build:
+      context: ../EE471-week5                     # the submodule with the source code
+      dockerfile: ../Task-1-Docker/speech-studio/Dockerfile   # relative to the context
+    image: speech-studio
+    ports:
+      - "5000:5000"                               # host:container -> http://localhost:5000
+    env_file: ../.env                             # SPEECH_KEY / SPEECH_REGION, given at run time, not baked into the image
+    restart: unless-stopped
+
+  voice-calculator:
+    build:
+      context: ../EE471-week5
+      dockerfile: ../Task-1-Docker/voice-calculator/Dockerfile
+    image: voice-calculator
+    ports:
+      - "5001:5000"                               # same port inside, a different one on the host -> http://localhost:5001
+    env_file: ../.env
+    restart: unless-stopped
